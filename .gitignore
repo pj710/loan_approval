@@ -1,0 +1,29 @@
+# Data files (too large for GitHub)
+data/raw/
+data/processed/*.csv
+*.parquet
+
+# Model files (too large)
+models/*.pkl
+models/*.keras
+models/*.h5
+models/fair_models/
+models/fair_representation/
+
+# Environment
+.env
+*.pyc
+__pycache__/
+.ipynb_checkpoints/
+*.egg-info/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Logs
+*.log
