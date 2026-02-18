@@ -1,0 +1,20 @@
+{
+  "state_code": {
+    "n_features": 16,
+    "input_type": "string",
+    "output_column": "state_code_hashed",
+    "original_cardinality": 53
+  },
+  "debt_to_income_ratio": {
+    "n_features": 5,
+    "input_type": "string",
+    "output_column": "dti_hashed",
+    "original_cardinality": 19
+  },
+  "county_code": {
+    "n_features": 32,
+    "input_type": "string",
+    "output_column": "county_code_hashed",
+    "original_cardinality": 3078
+  }
+}

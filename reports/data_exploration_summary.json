@@ -1,0 +1,44 @@
+{
+  "date": "2026-02-08 22:04:46",
+  "task": "Task 1.2: Initial Data Exploration",
+  "dataset": {
+    "rows": 100000,
+    "columns": 102,
+    "memory_mb": 494.104568
+  },
+  "missing_values": {
+    "columns_with_missing": 33,
+    "columns_high_missing_40pct": 25
+  },
+  "duplicates": 0,
+  "key_features": {
+    "available": [
+      "action_taken",
+      "loan_amount",
+      "property_value",
+      "income",
+      "debt_to_income_ratio",
+      "combined_loan_to_value_ratio",
+      "interest_rate",
+      "rate_spread",
+      "loan_term",
+      "loan_type",
+      "loan_purpose",
+      "occupancy_type",
+      "state_code",
+      "applicant_race_1",
+      "applicant_ethnicity_1",
+      "applicant_sex",
+      "applicant_age"
+    ],
+    "missing": [
+      "property_type"
+    ]
+  },
+  "target_variable": {
+    "approval_rate": 0.5553685364230634,
+    "denial_rate": 0.4446314635769366,
+    "approved_count": 42564,
+    "denied_count": 34077
+  }
+}

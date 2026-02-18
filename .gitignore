@@ -1,5 +1,10 @@
+# Virtual environment
+.venv/
+venv/
+env/
+
 # Data files (too large for GitHub)
-data/raw/
+data/raw/*.csv
 data/processed/*.csv
 *.parquet
 
@@ -7,8 +12,16 @@ data/processed/*.csv
 models/*.pkl
 models/*.keras
 models/*.h5
-models/fair_models/
-models/fair_representation/
+models/fair_models/*.pkl
+models/fair_models/*.keras
+models/fair_representation/*.pkl
+models/fair_representation/*.keras
+
+# Keep directory structure
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+!models/.gitkeep
+!models/fair_models/.gitkeep
 
 # Environment
 .env
@@ -27,3 +40,6 @@ Thumbs.db
 
 # Logs
 *.log
+
+# Reports (large HTML files)
+reports/*.html

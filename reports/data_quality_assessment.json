@@ -1,0 +1,13 @@
+{
+  "total_rows": 1603865,
+  "total_columns": 102,
+  "columns_with_missing": 33,
+  "duplicate_rows": 0,
+  "columns_with_validation_issues": [
+    "income",
+    "loan_amount",
+    "property_value",
+    "loan_term"
+  ],
+  "memory_usage_gb": 7.916727688
+}

@@ -1,0 +1,22 @@
+{
+  "date": "2026-02-11 18:20:14",
+  "phase": "Phase 2: Data Cleaning & Preprocessing",
+  "initial_rows": 1603865,
+  "final_rows": 493568,
+  "retention_rate": 30.773662371833037,
+  "initial_columns": 74,
+  "final_columns": 74,
+  "operations": {
+    "columns_dropped_missing": 25,
+    "columns_imputed": 0,
+    "outliers_removed": 224502,
+    "duplicates_removed": 0,
+    "one_hot_encoded_columns": 4
+  },
+  "target_distribution": {
+    "approved": 442218,
+    "denied": 51350,
+    "approval_rate": 0.8959616506742739
+  },
+  "output_file": "/Users/josiahgordor/Desktop/DSPortfolio/Projects/loan_approval/data/processed/cleaned_data.csv"
+}

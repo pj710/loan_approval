@@ -1,0 +1,33 @@
+feature,mean_abs_shap
+loan_to_income_ratio,0.0127113810902839
+loan_term,0.00809042273588289
+interest_rate,0.00806667310223446
+dti_ltv_interaction,0.007894079034800914
+housing_expense_ratio,0.007785320606376402
+loan_amount,0.007529952762777442
+ffiec_msa_md_median_family_income,0.007126485866738372
+loan_rate_interaction,0.0069574184594203324
+state_approval_rate,0.00684823666261932
+property_value,0.005363969882960146
+county_frequency,0.005296581528059277
+tract_population,0.005147185296888077
+has_coborrower,0.004423978624627896
+tract_owner_occupied_units,0.004191723430292392
+tract_median_age_of_housing_units,0.003896610013759702
+tract_to_msa_income_percentage,0.0036219567308428085
+origination_charges,0.0035270951483824193
+combined_risk_score,0.003403035049125789
+derived_msa_md,0.003049491456970677
+applicant_age_numeric,0.0027694315112999058
+loan_to_value_ratio,0.002656265040396195
+income_coborrower_interaction,0.0025523671784642332
+tract_one_to_four_family_homes,0.0019697865185889134
+rate_spread,0.001939217160567053
+loan_size_category_$200-300K,0.001900968751061054
+census_tract,0.001791870489729931
+loan_type_Federal Housing Administration insured (FHA),0.001713466038077231
+loan_type_Veterans Affairs guaranteed (VA),0.0015615715039499329
+loan_size_category_$300-400K,0.0013626876852131792
+construction_method_Site-Built,0.0012372812346812508
+income,0.0011191246560745363
+loan_size_category_$400-600K,0.0011125584330378268

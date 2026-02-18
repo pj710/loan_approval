@@ -1,0 +1,9 @@
+{
+  "technique": "SMOTE",
+  "original_samples": 345694,
+  "synthetic_samples": 273764,
+  "final_samples": 619458,
+  "sampling_strategy": "auto (1:1 ratio)",
+  "k_neighbors": 6,
+  "neighbor_algorithm": "ball_tree"
+}

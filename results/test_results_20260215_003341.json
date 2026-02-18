@@ -1,0 +1,23 @@
+{
+  "test_set_size": 74036,
+  "metrics": {
+    "auc_roc": 0.9999839773165303,
+    "accuracy": 0.9985817710303095,
+    "precision": 0.9995775752821193,
+    "recall": 0.9988391901466842,
+    "f1_score": 0.9992082463032642
+  },
+  "confusion_matrix": {
+    "true_negatives": 7675,
+    "false_positives": 28,
+    "false_negatives": 77,
+    "true_positives": 66256
+  },
+  "success_criteria": {
+    "AUC-ROC \u2265 0.75": true,
+    "Precision \u2265 0.80": true,
+    "Recall \u2265 0.70": true,
+    "F1 Score \u2265 0.70": true
+  },
+  "timestamp": "20260215_003341"
+}
