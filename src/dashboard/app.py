@@ -16,6 +16,7 @@ Run:
     streamlit run src/dashboard/app.py
 """
 
+
 import streamlit as st
 import pandas as pd
 import numpy as np
@@ -26,9 +27,26 @@ import json
 from datetime import datetime
 from pathlib import Path
 import io
+import yaml
+from dotenv import load_dotenv
+import os
 
-# Configuration
-API_URL = "http://localhost:8000"
+# Load environment variables
+env_path = Path(__file__).parent.parent.parent / '.env'
+if env_path.exists():
+    load_dotenv(dotenv_path=env_path)
+
+# Load config.yaml
+config_path = Path(__file__).parent.parent.parent / 'config.yaml'
+if config_path.exists():
+    with open(config_path, 'r') as f:
+        config = yaml.safe_load(f)
+else:
+    config = {}
+
+API_URL = os.getenv('API_URL')
+if not API_URL and 'api' in config:
+    API_URL = f"http://{config['api']['host']}:{config['api']['port']}"
 PROJECT_ROOT = Path(__file__).parent.parent.parent
 
 # Page configuration

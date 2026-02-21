@@ -527,7 +527,7 @@ locust -f tests/locustfile.py --host=http://localhost:8000
 | `/explain` | 285ms | 264ms | 574ms |
 | `/batch/predict` (10) | 1.4s | 934ms | 9.5s |
 
-- **Target SLA**: < 500ms for single predictions ✅
+- **Target SLA**: < 500ms for single predictions 
 - **Recommended throughput**: 50-100 requests/second
 
 ---

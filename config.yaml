@@ -1,0 +1,56 @@
+# Main configuration for loan approval project
+
+project:
+  name: Loan Approval ML System
+  author: Josiah Gordor
+  version: 1.0
+  description: >
+    AI-powered mortgage underwriting assistant using HMDA data.
+
+paths:
+  data_raw: data/raw/hdma_loan_data_2024.csv
+  data_processed: data/processed/
+  models: models/
+  reports: reports/
+  results: results/
+
+api:
+  host: 0.0.0.0
+  port: 8000
+  debug: true
+  docs_url: /docs
+
+model:
+  type: xgboost
+  random_seed: 42
+  test_size: 0.15
+  val_size: 0.15
+  features:
+    - income
+    - loan_amount
+    - property_value
+    - dti
+    - ltv
+    - interest_rate
+    - loan_term
+    - property_type
+    - loan_type
+    - occupancy_type
+    - state_code
+    - applicant_age
+  target: target
+
+fairness:
+  metrics:
+    - demographic_parity_difference
+    - equalized_odds_difference
+    - disparate_impact
+  protected_attributes:
+    - applicant_race_1
+    - applicant_ethnicity_1
+    - applicant_sex
+    - applicant_age
+
+explainability:
+  method: shap
+  top_features: 10

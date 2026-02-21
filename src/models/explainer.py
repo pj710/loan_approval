@@ -81,6 +81,7 @@ class LoanExplainer:
             'income_high': 100000
         }
         
+        self._shap_cache = {}
         self._initialize_explainer()
     
     def _initialize_explainer(self):
@@ -135,23 +136,23 @@ class LoanExplainer:
         check_additivity: bool = False
     ) -> np.ndarray:
         """
-        Compute SHAP values for given data.
-        
+        Compute SHAP values for given data. Uses caching to avoid recomputation.
         Args:
             X: Feature matrix (n_samples, n_features)
             check_additivity: Whether to check SHAP additivity (if supported)
-            
         Returns:
             SHAP values array
         """
         if self.explainer is None:
             raise ValueError("Explainer not initialized. Provide background data.")
-        
+        key = hash(X.tobytes())
+        if key in self._shap_cache:
+            self.shap_values = self._shap_cache[key]
+            print(f"✅ SHAP values loaded from cache: shape {self.shap_values.shape}")
+            return self.shap_values
         print(f"Computing SHAP values for {X.shape[0]} samples...")
-        
         try:
             if self.model_type == 'tree':
-                # Try with check_additivity, fall back if not supported
                 try:
                     self.shap_values = self.explainer.shap_values(
                         X, check_additivity=check_additivity
@@ -160,18 +161,14 @@ class LoanExplainer:
                     self.shap_values = self.explainer.shap_values(X)
             else:
                 self.shap_values = self.explainer.shap_values(X)
-            
-            # Handle binary classification (take positive class SHAP values)
             if isinstance(self.shap_values, list) and len(self.shap_values) == 2:
                 self.shap_values = self.shap_values[1]
-            
-            # Ensure we have a numpy array
+            self._shap_cache[key] = self.shap_values
             if isinstance(self.shap_values, np.ndarray):
                 print(f"✅ SHAP values computed: shape {self.shap_values.shape}")
             else:
                 print(f"✅ SHAP values computed")
             return self.shap_values
-            
         except Exception as e:
             print(f"⚠️ Error computing SHAP values: {e}")
             raise
@@ -393,50 +390,41 @@ class LoanExplainer:
         include_values: bool = True
     ) -> Dict[str, Any]:
         """
-        Generate detailed explanation for a single prediction.
-        
+        Generate detailed explanation for a single prediction. Vectorized for performance.
         Args:
             X: Feature matrix
             index: Index of the sample to explain
             top_k: Number of top contributing features
             include_values: Whether to include feature values in explanation
-            
         Returns:
             Dictionary with prediction explanation
         """
         if self.shap_values is None:
             self.compute_shap_values(X)
-        
-        # Get prediction
         if hasattr(self.model, 'predict_proba'):
             prob = self.model.predict_proba(X[index:index+1])[0, 1]
             pred = 1 if prob > 0.5 else 0
         else:
             pred = self.model.predict(X[index:index+1])[0]
             prob = float(pred)
-        
-        # Get SHAP values for this sample
         shap_vals = self.shap_values[index]
         feature_vals = X[index]
-        
-        # Get top positive and negative contributors
-        sorted_indices = np.argsort(shap_vals)
-        top_positive_idx = sorted_indices[-top_k:][::-1]
-        top_negative_idx = sorted_indices[:top_k]
-        
+        # Vectorized top contributors
+        pos_mask = shap_vals > 0
+        neg_mask = shap_vals < 0
+        pos_indices = np.argsort(shap_vals)[-top_k:][::-1]
+        neg_indices = np.argsort(shap_vals)[:top_k]
         explanation = {
             'prediction': 'Approved' if pred == 1 else 'Denied',
             'probability': float(prob),
-            'confidence': float(abs(prob - 0.5) * 200),  # 0-100% confidence scale
+            'confidence': float(abs(prob - 0.5) * 200),
             'top_positive_factors': [],
             'top_negative_factors': [],
             'expected_value': float(self.explainer.expected_value[1] 
                                    if isinstance(self.explainer.expected_value, list)
                                    else self.explainer.expected_value)
         }
-        
-        # Add top positive factors (contributing to approval)
-        for idx in top_positive_idx:
+        for idx in pos_indices:
             if shap_vals[idx] > 0:
                 factor = {
                     'feature': self.feature_names[idx],
@@ -446,9 +434,7 @@ class LoanExplainer:
                 if include_values:
                     factor['value'] = float(feature_vals[idx])
                 explanation['top_positive_factors'].append(factor)
-        
-        # Add top negative factors (contributing to denial)
-        for idx in top_negative_idx:
+        for idx in neg_indices:
             if shap_vals[idx] < 0:
                 factor = {
                     'feature': self.feature_names[idx],
@@ -458,7 +444,6 @@ class LoanExplainer:
                 if include_values:
                     factor['value'] = float(feature_vals[idx])
                 explanation['top_negative_factors'].append(factor)
-        
         return explanation
     
     def generate_human_explanation(
@@ -630,7 +615,7 @@ EXPLANATION_TEMPLATES = {
     'approved_high_confidence': """
 APPROVAL RECOMMENDED (High Confidence: {confidence}%)
 
-This application demonstrates strong creditworthiness:
+This application demonstrates strong creditworthiness based on 
 {positive_factors}
 
 While the following factors were noted, they do not significantly impact the recommendation:
@@ -638,7 +623,6 @@ While the following factors were noted, they do not significantly impact the rec
 
 Suggested Action: Proceed to final documentation review.
 """,
-
     'approved_moderate_confidence': """
 APPROVAL RECOMMENDED (Moderate Confidence: {confidence}%)
 

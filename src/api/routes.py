@@ -18,6 +18,7 @@ import numpy as np
 import pandas as pd
 import joblib
 from fastapi import APIRouter, HTTPException, status
+from src.data_processing import preprocess_batch
 
 from .schemas import (
     LoanApplication,
@@ -596,28 +597,25 @@ async def explain(application: LoanApplication) -> ExplanationResponse:
 async def batch_predict(request: BatchPredictionRequest) -> BatchPredictionResponse:
     """
     Predict loan approval for multiple applications.
-    
-    Args:
-        request: BatchPredictionRequest with list of applications
-        
-    Returns:
-        BatchPredictionResponse with all predictions
+    Cleans batch data before prediction using data_processing module.
     """
     start_time = time.time()
-    
     if len(models) == 0 or encoder is None or scaler is None:
         raise HTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
             detail="Models not loaded. Check /health endpoint."
         )
-    
+    # Convert applications to DataFrame
+    batch_df = pd.DataFrame([app.dict() for app in request.applications])
+    # Clean batch data
+    batch_df_clean = preprocess_batch(batch_df)
     predictions = []
-    for app in request.applications:
+    for app_dict in batch_df_clean.to_dict(orient='records'):
+        app = LoanApplication(**app_dict)
         try:
             pred = await predict(app)
             predictions.append(pred)
         except HTTPException as e:
-            # Include error as failed prediction
             predictions.append(PredictionResponse(
                 prediction="Error",
                 probability=0.0,
@@ -627,9 +625,7 @@ async def batch_predict(request: BatchPredictionRequest) -> BatchPredictionRespo
                 model_name=model_name,
                 processing_time_ms=0.0
             ))
-    
     total_time = (time.time() - start_time) * 1000
-    
     return BatchPredictionResponse(
         predictions=predictions,
         total_processed=len(predictions),

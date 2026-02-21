@@ -35,6 +35,7 @@ This report documents the fair lending compliance measures implemented in the AI
 ### 1.1 Equal Credit Opportunity Act (ECOA)
 
 ECOA prohibits discrimination in credit decisions based on:
+
 - Race or color
 - Religion
 - National origin
@@ -45,6 +46,7 @@ ECOA prohibits discrimination in credit decisions based on:
 - Good faith exercise of rights under Consumer Credit Protection Act
 
 **Compliance Approach:**
+
 - All protected attributes explicitly excluded from model features
 - Fairness metrics monitored in real-time
 - Adverse action reasons generated for denials
@@ -52,6 +54,7 @@ ECOA prohibits discrimination in credit decisions based on:
 ### 1.2 Fair Housing Act
 
 The Fair Housing Act prohibits discrimination in residential real estate transactions based on:
+
 - Race
 - Color
 - National origin
@@ -61,6 +64,7 @@ The Fair Housing Act prohibits discrimination in residential real estate transac
 - Disability
 
 **Compliance Approach:**
+
 - Models trained with fairness constraints
 - Regular fairness audits across protected groups
 - Disparate impact testing conducted
@@ -68,11 +72,13 @@ The Fair Housing Act prohibits discrimination in residential real estate transac
 ### 1.3 CFPB Guidance on Fair Lending
 
 The CFPB has issued guidance on:
+
 - Use of alternative data in underwriting
 - Machine learning model explainability
 - Adverse action notification requirements
 
 **Compliance Approach:**
+
 - SHAP-based explanations for every prediction
 - Human-readable factor descriptions
 - Audit trail for all predictions
@@ -107,7 +113,6 @@ Models were trained using multiple bias mitigation techniques:
 |-----------|-------|-------------|
 | **Reweighting** | Pre-processing | Adjust sample weights to balance groups |
 | **Fair Representation** | In-processing | Encode features to reduce demographic signal |
-| **Threshold Calibration** | Post-processing | Adjust decision thresholds per group |
 | **Adversarial Debiasing** | In-processing | Train adversary to remove protected info |
 
 ### 2.3 Fair Model Variants
@@ -266,6 +271,7 @@ We tested whether geographic features act as proxies for race:
 ### 6.1 Real-Time Monitoring
 
 The fairness dashboard provides:
+
 - Live fairness metrics by model
 - Charts comparing DPD, EOD, and DIR
 - Alerts when thresholds exceeded
@@ -279,13 +285,6 @@ The fairness dashboard provides:
 | Full model validation | Quarterly | Risk management |
 | Regulatory filing | Annual | Legal |
 
-### 6.3 Retraining Triggers
-
-Model retraining is triggered by:
-- Fairness metric exceeds threshold for 7+ days
-- Performance drift > 5% AUC decline
-- Regulatory changes requiring updates
-- Quarterly scheduled updates
 
 ---
 
