@@ -5,64 +5,26 @@
 [![Python](https://img.shields.io/badge/Python-3.8%2B-blue.svg)](https://www.python.org/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
----
-
-## 📋 Table of Contents
-
-- [Project Overview](#project-overview)
-- [Key Features](#key-features)
-- [Project Structure](#project-structure)
-- [End-to-End Project Tasks](#end-to-end-project-tasks)
-- [Technical Stack](#technical-stack)
-- [Success Metrics](#success-metrics)
-- [Setup & Installation](#setup--installation)
-- [Usage](#usage)
-- [Contact](#contact)
-
----
-
 ## Project Overview
 
-### Machine Learning Task
+The American dream is the hope of achieving success and fulfillment from years of hardwork, symbolised by homeownership. Mortgages aid millions to realize this dream of homeownership by providing financing to credit-worthy applicants to acquire homes as their primary residences or as investment instruments for building wealth.
 
-This is a **supervised binary classification problem** that predicts whether a mortgage loan application will be **approved** or **denied** based on applicant information, loan characteristics, and property details.
+The mortgage business is a highly regulated and data intensive enterprise, requiring meticulous underwriting processes for determining which applications get approved or denied. The approval process involves several stages from initial application, through underwriting to closing, and can last from several days to months. Complexities in loan requirements for the many mortgage products, make the approval process slow and prone to human bias.
 
-**Input Features**: 15-20 underwriting factors including:
+Machine learning provides tools and techniques for improving the approval process through automated analytics. Automated analytics can speed up review process and minimize bias by providing live recommendations for each application and flagging possible issues/red flags for further review by underwriters. A trained supervised classifier can generate probability scores for each application based on applicant information, loan terms and property details. Feature importance information from the model can also provide additional insights into factors impacting the systems decision and support underwriting activities.
 
-- Financial metrics (income, debt-to-income* ratio, loan-to-value ratio)
-- Loan characteristics (amount, term, interest rate, loan type)
-- Property information (value, type, location)
-- Applicant demographics (for fairness monitoring only, not model features)
-
-**Target Variable**: Loan approval decision (Binary: 1 = Approved, 0 = Denied)
-
-**Model Output**:
-
-- Approval probability (0.0 to 1.0)
-- Binary prediction (Approved/Denied)
-- Explainability features (SHAP values showing which factors influenced the decision)
-
-### Business Objectives
+## System Objectives
 
 The **AI-powered underwriting assistant** analyzes mortgage applications and provides real-time approval recommendations, risk assessments, and fairness audits. The system is designed to:
 
 - **Accelerate Processing**: Reduce underwriting review time to under 10 minutes per application
 - **Ensure Fairness**: Monitor for disparate impact across protected demographics (race, ethnicity, gender, age)
-- **Improve Accuracy**: Achieve ≥75% AUC-ROC with balanced precision (≥0.80) and recall (≥0.70)
+- **Improve Accuracy**: Achieve ≥75% AUC-ROC with f1 Score > 80%
 - **Support Decisions**: Provide explainable AI insights (SHAP values) to augment human underwriters
-- **Minimize Risk**: Prioritize precision to reduce bad loan approvals (false positives)
-
-### Data & Scope
-
-**Data Source**: 2024 HMDA dataset (Home Mortgage Disclosure Act); ~2.4M applications across all states in US
-
-**Scope**: Owner-occupied home purchase loans only (excludes refinances and investment properties)
-
-**Modeling Approach**: Seven models including XGBoost, Random Forest, Neural Networks, GoSDT, FasterRisk and GLM are evaluated for performance and fairness. Top three models form the components for a final ensemble model with calibrated probabilities.
-
----
-
-## Key Features
+- **Minimize Risk**: Balance precision to reduce bad loan approvals (false positives) with Recall to reduce wrong denials (False negatives)
+- **Maximize Expected Value** 
+  
+### System Features
 
 - **Multi-Model Ensemble**: Top perfoming models are ensembled into one with calibrated probabilities
 - **Underwriting Metrics**: Automated calculation of DTI (debt-to-income), LTV (loan-to-value), income ratios
@@ -71,49 +33,37 @@ The **AI-powered underwriting assistant** analyzes mortgage applications and pro
 - **Decision Dashboard**: Web interface displaying approval confidence, risk scores, and flagged applications
 - **API Integration**: FastAPI backend for seamless workflow integration (<500ms response time)
 
----
+## Machine Learning Task
 
-## 📁 Project Structure
+The system utilizes a **supervised binary classifier** that predicts whether a mortgage loan application will be **approved** or **denied** based on applicant information, loan characteristics, and property details.
 
-```
-ReadME.md
-requirements.txt
-data/
-    processed/
-    raw/
-        hdma_loan_data_2024.csv
-models/
-notebooks/
-    data_cleaning.ipynb
-    eda.ipynb
-reports/
-    loan_data_profile_report.html
-results/
-    fairness_metrics_20251216_010030.csv
-    fairness_metrics_20251216_010116.csv
-    fairness_metrics_20251217_184747.csv
-    fairness_metrics_20251217_235538.csv
-    fairness_metrics_20251223_030029.csv
-    fairness_metrics_20251228_160106.csv
-    model_performance_20251216_010030.csv
-    model_performance_20251216_010116.csv
-    model_performance_20251217_184747.csv
-    model_performance_20251217_235538.csv
-    model_performance_20251223_030029.csv
-    model_performance_20251228_155743.csv
-    model_performance_20251228_160024.csv
-    model_performance_20251228_160106.csv
-    summary_20251216_010030.json
-    summary_20251216_010116.json
-    summary_20251217_184747.json
-    summary_20251217_235538.json
-    summary_20251223_030029.json
-    summary_20251228_160106.json
-```
+**Target Variable**: Loan approval decision (Binary: 1 = Approved, 0 = Denied)
 
----
+### Model Output
 
-## 🔨 End-to-End Project Tasks
+- Approval probability (0.0 to 1.0)
+- Binary prediction (Approved/Denied)
+- Explainability features (SHAP values showing which factors influenced the decision)
+
+### Data & Scope
+
+**Data Source**: 2024 HMDA dataset (Home Mortgage Disclosure Act); ~2.4M applications across all states in US
+**Key input features**: Dataset consists of 15-20 underwriting factors including:
+
+- Financial metrics (income, debt-to-income* ratio, loan-to-value ratio)
+- Loan characteristics (amount, term, interest rate, loan type)
+- Property information (value, type, location)
+- Applicant demographics (for fairness monitoring only, not model features)
+
+**Scope**: Owner-occupied home purchase loans only (excludes refinances and investment properties)
+
+### Modeling Approach
+
+- Data: Hashed features, One-hot encoding, normalization, fair learning (generate fair feature embeddings for training)
+- Model : Random Forest, Xgboost, Neural Net(Tabnet)
+- Loss Function: Binary Cross Entropy (BCE)
+- Evaluation: Cross Validation, Confusion Matrix (priority: f1 Score),  AUC
+
 ## Project Phases & Tasks
 
 | Phase | Task Description                | Key Deliverables                          | Status     |
@@ -130,7 +80,7 @@ results/
 | 10    | Dashboard Development           | Streamlit dashboard, app.py                | Completed  |
 | 11    | Documentation                   | Model card, guides, compliance docs        | Completed  |
 
-## 🛠️ Technical Stack
+##  Technical Stack
 
 ### Data & ML
 
@@ -166,7 +116,7 @@ results/
 
 ---
 
-## 📊 Success Metrics
+## Success Metrics
 
 ### Model Performance (Technical)
 | Metric | Target | Current |
@@ -180,20 +130,11 @@ results/
 
 | Metric | Target | Current |
 |--------|--------|---------|
-| Demographic Parity Difference (DPD) | < 0.05 | TBD |
+| Demographic Parity Difference (DPD) | < 0.05 | TBD|
 | Equalized Odds Difference (EOD) | < 0.05 | TBD |
 | 80% Rule Test | Pass | TBD |
 
-### Business Impact
-
-| Metric | Target |
-|--------|--------|
-| Processing Time Reduction | 67% (30 min → <10 min) |
-| API Response Time | <500ms |
-
----
-
-## 🚀 Setup & Installation
+##  Setup & Installation
 
 ### Prerequisites
 
