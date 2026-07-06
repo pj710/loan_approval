@@ -9,13 +9,13 @@
 
 ### Context & Motivation
 
-Homeownership represents a cornerstone of the American dream—the aspiration to achieve success and build wealth through years of hard work. Mortgages enable millions of Americans to realize this dream by providing financing to creditworthy applicants for purchasing homes as primary residences or as investment vehicles for wealth creation.
+Homeownership represents a cornerstone of the American dream;the aspiration to achieve success and build wealth through years of hard work. Mortgages enable millions of Americans to realize this dream by providing financing to creditworthy applicants for purchasing homes as primary residences or as investment vehicles for wealth creation.
 
 ### The Challenge: Complexity & Inefficiency in Traditional Underwriting
 
 The mortgage industry operates as a highly regulated, data-intensive enterprise requiring rigorous underwriting processes to determine loan approval decisions. Current challenges include:
 
-- **Process Duration**: The approval process spans multiple stages—from initial application through underwriting to closing—often taking days to months to complete
+- **Process Duration**: The approval process spans multiple stages from initial application through underwriting to closing;often taking days to months to complete
 - **Regulatory Burden**: Lenders must ensure strict compliance with requirements from federal regulators and investors at every stage, facing substantial penalties for violations
 - **Product Complexity**: The diverse array of mortgage products with varying requirements makes manual review time-consuming and cognitively demanding
 - **Human Bias Risk**: Manual underwriting processes are susceptible to unconscious biases that can lead to discriminatory lending practices
