@@ -104,7 +104,7 @@ By combining predictive accuracy with fairness guarantees, this system enables l
 - Feature hashing for high-cardinality categorical variables
 - One-hot encoding for nominal features
 - Normalization/standardization for numerical features
-- Fair representation learning to generate unbiased feature embeddings
+- Adversarial debiasing using autoencoders
 
 **Models**:
 

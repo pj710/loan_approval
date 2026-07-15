@@ -42,7 +42,7 @@ cols_to_drop = cols_to_drop = [
     # Administrative/Identifiers
     'activity_year', 'lei', 'derived_msa_md', 'census_tract', 
     'conforming_loan_limit', 'submission_of_application', 'preapproval','aus_1','aus_2',
-    'aus_3', 'aus_4', 'aus_5',
+    'aus_3', 'aus_4', 'aus_5', 'total_units', 'construction_method' # Added total_units to the list
     
     # Sparse/Optional
     'applicant_credit_score_type', 'co_applicant_credit_score_type',
@@ -120,8 +120,6 @@ data.drop(columns=['action_taken'], inplace=True)
 data.to_csv(os.path.join(processed_data_path, 'cleaned_with_target.csv'), index=False)
 
 #%%
-data = pd.read_csv(os.path.join(processed_data_path, 'cleaned_with_target.csv'), nrows=2e5)
-
 ## generate data profile report
 profile = data_profiling.ProfileReport(data, title="Data Profile Report")
 profile.to_file(os.path.join(reports_path, 'data_profile_report.html'))

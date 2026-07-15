@@ -38,7 +38,7 @@
 ### Performance Benchmarks
 
 - Industry standard AUC-ROC: 0.70-0.80
-- Precision typically prioritized over recall (minimize bad loans approved)
+- Precision typically prioritized over recall (minimize approving bad loans - False Positives)
 
 ---
 
@@ -53,7 +53,7 @@
 ### Fair Housing Act
 
 - **Coverage**: Prohibits discrimination in housing-related transactions
-- **Disparate Impact**: Neutral policies that disproportionately harm protected groups are illegal
+- **Disparate Impact**: Policies that disproportionately harm protected groups are illegal
 - **Testing**: 80% rule for disparate impact assessment
 
 ### Home Mortgage Disclosure Act (HMDA)

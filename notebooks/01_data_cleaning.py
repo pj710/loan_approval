@@ -42,9 +42,9 @@ data = data[(data['occupancy_type'] == 'Principal residence') & (data['loan_purp
 
 #%%
 # Fix data types
-data['county_code'] = data['county_code'].str.replace('.0', '', regex=False).str.zfill(4)
+data['county_code'] = data['county_code'].astype(str).replace('.0', '', regex=False).str.zfill(4)
 data['decision'] = data['decision'].astype('category')
-
+data['debt_to_income_ratio'] = data['debt_to_income_ratio'].str.replace('.0', '', regex=False)
 
 # Convert income to 000's
 data['income'] = data['income'] * 1000
@@ -64,12 +64,16 @@ data.drop_duplicates(inplace=True) # drop duplicate rows
 # Save the cleaned data after removing missing values and duplicates
 data.to_csv(os.path.join(processed_data_path, 'cleaned_data_v3.csv'), index=False)
 # %%
-
 # Perform basic statistical analysis
-statistics = data.describe()
-print("Basic statistical analysis:\n", statistics)
+statistics_num = data.describe(include='number')
+statistics_cat = data.describe(include=['category'])
+
+print("Basic statistical analysis (numerical):\n", statistics_num)
+print("\n")
+print("Basic statistical analysis (categorical):\n", statistics_cat)
 # %%
 # Visualize distributions of key variables using subplots
+
 key_variables = ['interest_rate', 'debt_to_income_ratio', 'loan_amount', 'income', 'property_value', 'decision', 'combined_loan_to_value_ratio', 'total_loan_costs']
 fig, axes = plt.subplots(4, 2, figsize=(10, 16))
 for i, var in enumerate(key_variables):
@@ -77,7 +81,7 @@ for i, var in enumerate(key_variables):
         if data[var].dtype.name == 'category' or data[var].dtype.name == 'object':
             data[var].value_counts().plot(kind='bar', ax=ax)
         else:
-            data[var].hist(ax=ax,)
+            data[var].hist(bins=50, ax=ax)
         ax.set_title(f'Distribution of {var}')
         ax.set_xlabel(var)
         ax.set_ylabel('log Frequency')
