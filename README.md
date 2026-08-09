@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # AI-Powered Mortgage Underwriting Assistant
 
 > An intelligent ML-based decision support system that helps mortgage lenders make consistent, fair, and accurate loan approval decisions using HMDA data.
@@ -204,10 +205,37 @@ pip install -r requirements.txt
 - Place it in the path configured under `paths.data_raw` in `config.yaml`
 
 5. **Run preprocessing scaffold and pipeline check**
+=======
+# Loan Approval Project
+
+This repository now includes a starter package layout for an AI-powered mortgage underwriting assistant.
+
+## Structure
+
+- loan_approval/ : package modules and configuration
+- src/ : reusable source modules for data, features, models, fairness, and explainability
+- notebooks/ : exploratory analysis notebooks
+- reports/ : generated reports and artifacts
+
+## Run the API
+
+```bash
+uvicorn loan_approval.app.main:app --reload
+```
+
+## Run the dashboard
+
+```bash
+streamlit run loan_approval/app/dashboard.py
+```
+
+## Run the pipeline scaffold
+>>>>>>> 3fa8e34e07270bc4b5f582301c1fc235e14077da
 
 ```bash
 python -c "from loan_approval.pipeline import run_training_pipeline; print(run_training_pipeline())"
 ```
+<<<<<<< HEAD
 
 6. **Launch API and Dashboard**
 
@@ -278,3 +306,5 @@ MIT License - see [LICENSE](LICENSE) file for details.
 ---
 
 **Disclaimer**: This project is for educational and portfolio demonstration purposes. Production deployment requires comprehensive legal review, compliance validation, and regulatory approval.
+=======
+>>>>>>> 3fa8e34e07270bc4b5f582301c1fc235e14077da
