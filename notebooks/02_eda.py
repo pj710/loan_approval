@@ -16,26 +16,24 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
-from xgboost import data
-import yaml
 import warnings
+
+from src.utils.config_loader import load_config
+from src.utils.paths import find_project_root, resolve_path
 
 warnings.filterwarnings('ignore')
 
-## set working directory
-if not os.getcwd().endswith('loan_approval'):
-    os.chdir('/Users/josiahgordor/Desktop/DSPortfolio/Projects/loan_approval') 
-    
-## set configuration variables using config.yaml 
-with open('config.yaml', 'r') as file:
-    config = yaml.safe_load(file)
-    
-    data_path = config['paths']
-    raw_data_path = data_path['data_raw']
-    processed_data_path = data_path['data_processed']
-    model_data_path = data_path['models']
-    reports_path = data_path['reports']
-    results_path = data_path['results']
+project_root = find_project_root(__file__)
+os.chdir(project_root)
+
+## set configuration variables using config.yaml
+config = load_config(project_root / 'config.yaml')
+data_path = config['paths']
+raw_data_path = resolve_path(data_path['data_raw'], project_root)
+processed_data_path = resolve_path(data_path['data_processed'], project_root)
+model_data_path = resolve_path(data_path['models'], project_root)
+reports_path = resolve_path(data_path['reports'], project_root)
+results_path = resolve_path(data_path['results'], project_root)
 
 #%%
 # Load the cleaned data with target
@@ -126,3 +124,16 @@ missing_values = data.isnull().sum()
 print("Missing values in each column:")
 print(missing_values[missing_values > 0])   
 # %%
+
+# q.5 - Are there any anomalies in the underwriting variables that need to be addressed before modeling?
+# Checking for anomalies in underwriting variables
+for var in underwriting_vars:
+    plt.figure(figsize=(8, 6))
+    sns.boxplot(x=data[var])
+    plt.title(f'Boxplot of {var}', fontsize=14, fontweight='bold')
+    plt.xlabel(var, fontsize=12)
+    plt.show()
+    
+# %%
+# q.6 - What is the rate of withdrawn applications and how does it vary across protected attributes?
+data['action_taken'].value_counts(normalize=True).sort_values(ascending=False).to_frame().reset_index()

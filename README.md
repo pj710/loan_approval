@@ -13,11 +13,11 @@ Homeownership represents a cornerstone of the American dream;the aspiration to a
 
 ### The Challenge: Complexity & Inefficiency in Traditional Underwriting
 
-The mortgage industry operates as a highly regulated, data-intensive enterprise requiring rigorous underwriting processes to determine loan approval decisions. Current challenges include:
+The mortgage business is a fast paced, highly regulated, data-intensive enterprise requiring rigorous underwriting processes to determine loan approval decisions. Current challenges include:
 
-- **Process Duration**: The approval process spans multiple stages from initial application through underwriting to closing;often taking days to months to complete
+- **Process Duration**: The approval process spans multiple stages from initial application through underwriting to closing;often taking 45 to 60 days.
 - **Regulatory Burden**: Lenders must ensure strict compliance with requirements from federal regulators and investors at every stage, facing substantial penalties for violations
-- **Product Complexity**: The diverse array of mortgage products with varying requirements makes manual review time-consuming and cognitively demanding
+- **Product Complexity**: The diverse array of mortgage products with varying requirements from regulators, secondary markets, and investors make manual review time-consuming and cognitively demanding.
 - **Human Bias Risk**: Manual underwriting processes are susceptible to unconscious biases that can lead to discriminatory lending practices
 
 ### The Opportunity: Machine Learning for Automated Decision Support
@@ -28,7 +28,7 @@ Machine learning offers transformative capabilities for modernizing the mortgage
 - **Consistency**: ML models apply uniform evaluation criteria across all applications, reducing variability in decisions
 - **Risk Detection**: Algorithms can flag potential issues or red flags for manual review by experienced underwriters
 - **Predictive Power**: Supervised classifiers generate probability scores based on comprehensive analysis of applicant information, loan terms, and property details
-- **Transparency**: Feature importance analysis reveals which factors drive approval decisions, supporting underwriter judgment and regulatory compliance
+- **Transparency**: Feature importance analysis reveals which factors drive approval decisions, supporting underwriters judgment and regulatory compliance, through advanced analytics.
 
 ### The Critical Issue: Algorithmic Fairness
 
@@ -57,6 +57,7 @@ By combining predictive accuracy with fairness guarantees, this system enables l
 |-----------|---------------|------|
 | **Predictive Accuracy** | AUC-ROC | ≥ 0.75 |
 | **Balanced Performance** | F1 Score | ≥ 0.80 |
+| **Cost-Sensitive Decision Quality** | Expected Value | Higher than baseline approval/denial policy under asymmetric costs |
 | **Processing Speed** | Review Time | < 10 minutes per application |
 | **Fairness (Race)** | Demographic Parity Difference | < 0.05 |
 | **Fairness (Outcomes)** | Equalized Odds Difference | < 0.05 |
@@ -64,12 +65,20 @@ By combining predictive accuracy with fairness guarantees, this system enables l
 
 ### Key Capabilities
 
-- **Multi-Model Ensemble**: Combines Random Forest, XGBoost, and TabNet classifiers with calibrated probability outputs
-- **Automated Underwriting Metrics**: Calculates debt-to-income ratio (DTI), loan-to-value ratio (LTV), and income verification ratios
-- **Continuous Fairness Monitoring**: Real-time tracking of Demographic Parity Difference (DPD) and Equalized Odds Difference (EOD) across protected groups
-- **Model Explainability**: SHAP force plots reveal feature contributions for each prediction, supporting human review
-- **Interactive Dashboard**: Streamlit web interface displays approval confidence, risk scores, and flagged applications
-- **Production-Ready API**: FastAPI backend with Pydantic validation for seamless integration into existing workflows
+Current implementation (available now):
+
+- **Data Ingestion and Validation**: Loads pipe-delimited HMDA records and validates required columns.
+- **Preprocessing and Labeling Scaffold**: Standardizes missing values, converts configured numeric fields, and creates a binary target from HMDA action codes.
+- **Train/Validation Split**: Produces stratified train/validation partitions with imputation-ready preprocessing.
+- **Pipeline Health API**: FastAPI service exposes `/health` and `/pipeline` endpoints for operational checks.
+- **Dashboard Scaffold**: Streamlit shell is available for future risk, explainability, and fairness visualizations.
+
+Planned capabilities (roadmap):
+
+- Multi-model training (Random Forest, XGBoost, TabNet)
+- Fairness metrics and mitigation workflows
+- SHAP-driven explanation artifacts and what-if analysis
+- Production-grade prediction endpoint (`/predict`)
 
 ## Technical Approach
 
@@ -86,9 +95,9 @@ By combining predictive accuracy with fairness guarantees, this system enables l
 
 ### Data
 
-**Source**: 2024 Home Mortgage Disclosure Act (HMDA) dataset  
-**Scale**: ~2.4M applications across all U.S. states  
-**Scope**: Owner-occupied home purchase loans (excludes refinances and investment properties)
+**Current Source in Repo**: HMDA lender-level extract (`5493001WHVQBGRSWEU75_header.txt`)  
+**Current Scale**: ~30K records in the local sample used for scaffolding and pipeline validation  
+**Target Scale**: Full annual HMDA dataset in downstream training/evaluation runs
 
 **Input Features** (15-20 variables):
 
@@ -98,6 +107,8 @@ By combining predictive accuracy with fairness guarantees, this system enables l
 - **Demographics**: Race, ethnicity, age, gender (used only for fairness auditing, not as model inputs)
 
 ### Methodology
+
+The items below define the target methodology for upcoming phases. The current codebase implements ingestion, preprocessing scaffolding, target labeling, and train/validation splitting.
 
 **Preprocessing**:
 
@@ -121,8 +132,24 @@ By combining predictive accuracy with fairness guarantees, this system enables l
 **Evaluation**:
 
 - Performance: AUC-ROC, Precision, Recall, F1 Score, Confusion Matrix
+- Expected Value Analysis: Compare approval policies using a cost-sensitive expected-value framework that accounts for asymmetric misclassification costs, where false positives (approving a risky loan) and false negatives (denying a creditworthy applicant) can carry different financial and regulatory consequences
 - Fairness: Demographic Parity Difference, Equalized Odds Difference, 80% Rule
 - Explainability: SHAP feature importance, force plots
+
+**Expected Value Comparison**:
+
+In addition to standard classification metrics, the model will be evaluated by estimating expected value under a cost matrix such as:
+
+- True Positive (TP): value of approving a creditworthy applicant
+- True Negative (TN): value of correctly denying an uncreditworthy applicant
+- False Positive (FP): cost of approving a risky applicant
+- False Negative (FN): cost of denying a creditworthy applicant
+
+The expected value can be expressed as:
+
+$EV = TP \times V_{TP} + TN \times V_{TN} + FP \times V_{FP} + FN \times V_{FN}$
+
+This makes it possible to compare competing models or decision thresholds in a way that reflects real lending economics rather than relying on accuracy alone.
 
 ## Technology Stack
 
@@ -174,52 +201,41 @@ pip install -r requirements.txt
 
 - Visit [FFIEC HMDA Data Browser](https://ffiec.cfpb.gov/data-browser/)
 - Download 2024 data
-- Place in `data/raw/hdma_loan_data_2024.csv`
+- Place it in the path configured under `paths.data_raw` in `config.yaml`
 
-5. **Run preprocessing and training**
+5. **Run preprocessing scaffold and pipeline check**
 
 ```bash
-jupyter notebook notebooks/00_data_exploration.py
-python src/models/trainer.py --config config.yaml
+python -c "from loan_approval.pipeline import run_training_pipeline; print(run_training_pipeline())"
 ```
 
 6. **Launch API and Dashboard**
 
 ```bash
-uvicorn src.api.main:app --reload
-streamlit run src/dashboard/app.py
+uvicorn loan_approval.app.main:app --reload
+streamlit run loan_approval/app/dashboard.py
 ```
 
 ---
 
 ## Usage Example
 
-### API Prediction
+### API Status Check
 
 ```python
 import requests
 
-application = {
-    "income": 95000,
-    "loan_amount": 350000,
-    "property_value": 450000,
-    "dti": 28,
-    "credit_score": 740,
-    "property_type": "Single Family",
-    "loan_term": 30
-}
-
-response = requests.post("http://localhost:8000/predict", json=application)
+response = requests.get("http://localhost:8000/pipeline")
 print(response.json())
-# Output: {"prediction": "approved", "probability": 0.87, "explanation": "..."}
+# Output includes data profile, missing-column checks, target summary, and split summary
 ```
 
 ### Dashboard
 
 1. Navigate to `http://localhost:8501`
-2. Enter application details
-3. Review approval recommendation and SHAP explanation
-4. Explore "What-if" scenarios
+2. Validate pipeline readiness and ingestion status
+3. (Planned) Review approval recommendation and SHAP explanation
+4. (Planned) Explore "What-if" scenarios
 
 ---
 
@@ -227,15 +243,15 @@ print(response.json())
 
 | Phase | Status |
 |-------|--------|
-| Data Collection & Cleaning | ✅ Complete |
-| Exploratory Analysis | ✅ Complete |
-| Feature Engineering | ✅ Complete |
-| Model Training & Evaluation | ✅ Complete |
-| Fairness Assessment | ✅ Complete |
-| Explainability | ✅ Complete |
-| API Development | ✅ Complete |
-| Dashboard | ✅ Complete |
-| Documentation | ✅ Complete |
+| Data Collection & Ingestion Scaffold | ✅ Complete |
+| Preprocessing & Target Mapping Scaffold | ✅ Complete |
+| Train/Validation Split Scaffold | ✅ Complete |
+| Model Training & Evaluation | 🚧 In Progress |
+| Fairness Assessment | 🚧 In Progress |
+| Explainability | 🚧 In Progress |
+| API Development | 🚧 In Progress |
+| Dashboard | 🚧 In Progress |
+| Documentation | 🚧 In Progress |
 
 ---
 

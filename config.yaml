@@ -8,11 +8,21 @@ project:
     AI-powered mortgage underwriting assistant using HMDA data.
 
 paths:
-  data_raw: data/raw/hdma_loan_data_2024.csv
+  data_raw: data/raw/5493001WHVQBGRSWEU75_header.txt
+  data_delimiter: "|"
   data_processed: data/processed/
   models: models/
   reports: reports/
   results: results/
+
+data_validation:
+  required_columns:
+    - activity_year
+    - loan_amount
+    - action_taken
+    - state_code
+    - debt_to_income_ratio
+    - combined_loan_to_value_ratio
 
 api:
   host: 0.0.0.0
@@ -29,16 +39,30 @@ model:
     - income
     - loan_amount
     - property_value
-    - dti
-    - ltv
+    - debt_to_income_ratio
+    - combined_loan_to_value_ratio
     - interest_rate
     - loan_term
-    - property_type
     - loan_type
     - occupancy_type
     - state_code
     - applicant_age
   target: target
+
+preprocessing:
+  numeric_columns:
+    - income
+    - loan_amount
+    - property_value
+    - interest_rate
+    - loan_term
+    - debt_to_income_ratio
+    - combined_loan_to_value_ratio
+
+target_mapping:
+  action_taken_column: action_taken
+  approved_codes: ["1", "2"]
+  denied_codes: ["3"]
 
 fairness:
   metrics:
