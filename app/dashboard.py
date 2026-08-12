@@ -112,7 +112,12 @@ def _normalize_ratio(value: object) -> float:
     return numeric
 
 
-def _risk_flags(application: pd.Series) -> list[str]:
+def _risk_flags(application: pd.Series, thresholds: dict | None = None) -> list[str]:
+    thresholds = thresholds or {}
+    dti_threshold = float(thresholds.get("dti", 0.43))
+    cltv_threshold = float(thresholds.get("cltv", 0.80))
+    ltv_threshold = float(thresholds.get("ltv", 0.90))
+
     flags = []
     dti = _normalize_ratio(application.get("debt_to_income_ratio", 0) or 0)
     cltv = _normalize_ratio(application.get("combined_loan_to_value_ratio", 0) or 0)
@@ -133,12 +138,12 @@ def _risk_flags(application: pd.Series) -> list[str]:
         property_value = float(application.get("property_value", 0) or 0)
         ltv = loan_amount / property_value if property_value else 0.0
 
-    if dti > 0.43:
-        flags.append("Debt-to-income ratio exceeds 43%.")
-    if cltv > 0.80:
-        flags.append("Combined loan-to-value ratio exceeds 80%.")
-    if ltv > 0.90:
-        flags.append("Loan-to-property-value ratio exceeds 90%.")
+    if dti > dti_threshold:
+        flags.append(f"Debt-to-income ratio exceeds {dti_threshold * 100:.0f}%.")
+    if cltv > cltv_threshold:
+        flags.append(f"Combined loan-to-value ratio exceeds {cltv_threshold * 100:.0f}%.")
+    if ltv > ltv_threshold:
+        flags.append(f"Loan-to-property-value ratio exceeds {ltv_threshold * 100:.0f}%.")
     return flags
 
 
@@ -311,8 +316,10 @@ def _render_prediction_tab(report: dict, project_root: Path, config: dict) -> No
 
     probability = float(model_bundle.predict_proba(model_input)[0, 1])
     threshold = float(training_summary.get("decision_threshold", 0.5))
-    review_margin = float(config.get("decision_policy", {}).get("review_margin", 0.10))
-    flags = _risk_flags(enriched_input.iloc[0])
+    decision_policy = config.get("decision_policy", {})
+    review_margin = float(decision_policy.get("review_margin", 0.10))
+    manual_review_thresholds = decision_policy.get("manual_review_thresholds", {})
+    flags = _risk_flags(enriched_input.iloc[0], manual_review_thresholds)
     fair_decision = None
     if fairness_feature and fairness_feature in enriched_input.columns and hasattr(model_bundle, "predict"):
         fair_decision = int(

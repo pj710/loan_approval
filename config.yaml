@@ -68,8 +68,15 @@ preprocessing:
     - high_cltv_flag
 
 decision_policy:
+  approval_threshold: 0.95
   min_precision: 0.985
   review_margin: 0.10
+  manual_review_thresholds:
+    dti: 0.43
+    cltv: 0.80
+    ltv: 0.90
+    cltv_formula: "loan_amount / property_value"
+    dti_formula: "loan_amount / income"
   costs:
     tp: 1.0
     tn: 0.25
