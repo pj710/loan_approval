@@ -50,7 +50,7 @@ def split_training_data(
     return {
         "features": available_features,
         "train_shape": (int(X_train.shape[0]), int(X_train.shape[1])),
-        "validation_shape": (int(X_val.shape[0]), int(X_val.shape[1])),
+        "test_shape": (int(X_val.shape[0]), int(X_val.shape[1])),
         "train_target_distribution": y_train.value_counts().to_dict(),
-        "validation_target_distribution": y_val.value_counts().to_dict(),
+        "test_target_distribution": y_val.value_counts().to_dict(),
     }

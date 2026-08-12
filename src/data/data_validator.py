@@ -26,5 +26,5 @@ def validate_required_columns(df: pd.DataFrame, required_columns: List[str]) -> 
 
 def summarize_target(df: pd.DataFrame, target_column: str = "target") -> Dict[str, int]:
     """Summarize binary target values and unlabeled records."""
-    value_counts = df[target_column].value_counts(dropna=False).to_dict()
+    value_counts = df[target_column].value_counts(dropna=True).to_dict()
     return {str(key): int(value) for key, value in value_counts.items()}

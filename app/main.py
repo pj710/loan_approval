@@ -5,7 +5,7 @@ try:
 except ImportError:  # pragma: no cover - optional dependency guard
     FastAPI = None
 
-from ..pipeline import run_training_pipeline
+from pipeline import run_training_pipeline
 
 
 def create_app() -> "FastAPI":
