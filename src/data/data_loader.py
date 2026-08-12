@@ -34,10 +34,15 @@ def load_dataset(path: str | Path, delimiter: str = "|") -> pd.DataFrame:
 
 def summarize_dataset(df: pd.DataFrame) -> Dict[str, Any]:
     """Create a concise profile for quick sanity checks."""
-    action_dist = (
-        df["action_taken"].value_counts(dropna=False).head(10).to_dict()
-        if "action_taken" in df.columns
-        else {}
+    target_column = "target" if "target" in df.columns else "decision" if "decision" in df.columns else None
+    target_dist = (
+        {str(key): int(value) for key, value in df[target_column].value_counts(dropna=True).to_dict().items()}
+        if target_column is not None
+        else (
+            {str(key): int(value) for key, value in df["action_taken"].value_counts(dropna=True).head(10).to_dict().items()}
+            if "action_taken" in df.columns
+            else {}
+        )
     )
 
     top_states = (
@@ -50,6 +55,6 @@ def summarize_dataset(df: pd.DataFrame) -> Dict[str, Any]:
         "row_count": int(df.shape[0]),
         "column_count": int(df.shape[1]),
         "sample_columns": df.columns[:12].tolist(),
-        "action_taken_distribution": action_dist,
+        "target_distribution": target_dist,
         "top_states": top_states,
     }

@@ -1,0 +1,16 @@
+,missing_rate,coverage
+debt_to_income_ratio,0.5530264788215318,0.4469735211784682
+interest_rate,0.18539764122802993,0.8146023587719701
+loan_to_income_ratio,0.17176816116745444,0.8282318388325456
+income,0.15882703868569592,0.8411729613143041
+combined_loan_to_value_ratio,0.03836446239273095,0.961635537607269
+property_value,0.006424670735624799,0.9935753292643752
+loan_to_property_value_ratio,0.006424670735624799,0.9935753292643752
+loan_amount,0.0,1.0
+loan_term,0.0,1.0
+loan_type,0.0,1.0
+occupancy_type,0.0,1.0
+state_code,0.0,1.0
+applicant_age,0.0,1.0
+applicant_age,0.0,1.0
+high_dti_flag,0.0,1.0

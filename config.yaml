@@ -47,6 +47,10 @@ model:
     - occupancy_type
     - state_code
     - applicant_age
+    - loan_to_income_ratio
+    - loan_to_property_value_ratio
+    - high_dti_flag
+    - high_cltv_flag
   target: target
 
 preprocessing:
@@ -58,6 +62,22 @@ preprocessing:
     - loan_term
     - debt_to_income_ratio
     - combined_loan_to_value_ratio
+    - loan_to_income_ratio
+    - loan_to_property_value_ratio
+    - high_dti_flag
+    - high_cltv_flag
+
+decision_policy:
+  min_precision: 0.985
+  review_margin: 0.10
+  costs:
+    tp: 1.0
+    tn: 0.25
+    fp: -3.0
+    fn: -0.5
+
+sampling:
+  strategy: smote
 
 target_mapping:
   action_taken_column: action_taken
@@ -65,6 +85,12 @@ target_mapping:
   denied_codes: ["3"]
 
 fairness:
+  mitigation:
+    strategy: multi_metric
+    primary_attribute: applicant_age
+    candidate_constraints:
+      - demographic_parity
+      - equalized_odds
   metrics:
     - demographic_parity_difference
     - equalized_odds_difference
