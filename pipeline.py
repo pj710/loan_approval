@@ -19,7 +19,12 @@ from src.data import (
 )
 from src.explainability.shap_explainer import explain_prediction
 from src.fairness.fairness_metrics import demographic_parity_difference, disparate_impact, equalized_odds_difference
-from src.fairness.fairness_selection import FairnessStrategyResult, choose_best_fairness_strategy, fairness_tradeoff_score
+from src.fairness.fairness_selection import (
+    FairnessStrategyResult,
+    choose_best_fairness_strategy,
+    cross_validated_fairness,
+    fairness_tradeoff_score,
+)
 from src.models import evaluate_model, train_model
 from src.models.fair_model import FairnessAwareModel
 from src.utils.config_loader import load_config
@@ -137,15 +142,27 @@ def run_training_pipeline() -> Dict[str, Any]:
             predictions=validation_predictions,
             probabilities=validation_probabilities,
         )["metrics"]
-        validation_fairness = {
-            "demographic_parity_difference": demographic_parity_difference(
-                validation_result["y"], validation_predictions, validation_sensitive
-            )["metric"],
-            "equalized_odds_difference": equalized_odds_difference(
-                validation_result["y"], validation_predictions, validation_sensitive
-            )["metric"],
-            "disparate_impact": disparate_impact(validation_predictions, validation_sensitive)["metric"],
-        }
+
+        if candidate_name == "baseline":
+            validation_fairness = {
+                "demographic_parity_difference": demographic_parity_difference(
+                    validation_result["y"], validation_predictions, validation_sensitive
+                )["metric"],
+                "equalized_odds_difference": equalized_odds_difference(
+                    validation_result["y"], validation_predictions, validation_sensitive
+                )["metric"],
+                "disparate_impact": disparate_impact(validation_predictions, validation_sensitive)["metric"],
+            }
+        else:
+            validation_fairness = cross_validated_fairness(
+                base_model,
+                validation_result["X"],
+                validation_result["y"],
+                validation_sensitive,
+                constraint=candidate_name.replace("fairlearn_", ""),
+                n_splits=5,
+                random_state=model_config.get("random_seed", 42),
+            )
         candidate_results.append(
             FairnessStrategyResult(
                 name=candidate_name,

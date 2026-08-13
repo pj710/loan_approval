@@ -193,13 +193,21 @@
       "false_approval_rate": 0.0,
       "false_rejection_rate": 0.0011265490048817123,
       "expected_value": 2810.0,
-      "roc_auc": 0.9999659184844508,
+      "roc_auc": 0.9999473285668784,
       "precision_floor_met": true,
       "candidate_thresholds": 181
     },
     "decision_policy": {
+      "approval_threshold": 0.95,
       "min_precision": 0.985,
       "review_margin": 0.1,
+      "manual_review_thresholds": {
+        "dti": 0.43,
+        "cltv": 0.8,
+        "ltv": 0.9,
+        "cltv_formula": "loan_amount / property_value",
+        "dti_formula": "loan_amount / income"
+      },
       "costs": {
         "tp": 1.0,
         "tn": 0.25,
@@ -208,31 +216,32 @@
       }
     },
     "sampling_strategy": "smote",
-    "fairness_strategy": "multi_metric",
+    "fairness_strategy": "fairlearn_equalized_odds",
     "fairness_attribute": "applicant_age",
-    "artifact_path": "/Users/josiahgordor/Desktop/DSPortfolio/Projects/loan_approval.worktrees/draw-an-architectural-diagram-for-this-project/models/loan_model.pkl"
+    "fairness_mode": "multi_metric",
+    "artifact_path": "/Users/josiahgordor/Desktop/DSPortfolio/Projects/loan_approval/models/loan_model.pkl"
   },
   "evaluation": {
-    "accuracy": 0.9981645763230346,
+    "accuracy": 0.9960232486999082,
     "precision": 1.0,
-    "recall": 0.9977469019902365,
-    "f1": 0.9988721804511278,
+    "recall": 0.9951182876455126,
+    "f1": 0.997553171466215,
     "confusion_matrix": [
       [
         606,
         0
       ],
       [
-        6,
-        2657
+        13,
+        2650
       ]
     ],
     "decision_threshold": 0.95,
-    "approval_rate": 0.8127867849495258,
+    "approval_rate": 0.8106454573263995,
     "false_approval_rate": 0.0,
-    "false_rejection_rate": 0.0022530980097634247,
-    "expected_value": 2805.5,
-    "roc_auc": 0.9999479482307976,
+    "false_rejection_rate": 0.00488171235448742,
+    "expected_value": 2795.0,
+    "roc_auc": 0.9999312173049825,
     "predictions": [
       1,
       1,
@@ -765,7 +774,7 @@
       1,
       1,
       0,
-      1,
+      0,
       1,
       1,
       1,
@@ -1081,7 +1090,7 @@
       0,
       1,
       0,
-      1,
+      0,
       1,
       0,
       0,
@@ -1442,8 +1451,8 @@
       1,
       1,
       0,
-      1,
       1,
+      0,
       1,
       0,
       0,
@@ -1564,10 +1573,10 @@
       1,
       1,
       0,
-      1,
       1,
       1,
       1,
+      0,
       1,
       1,
       1,
@@ -1698,7 +1707,7 @@
       1,
       1,
       1,
-      1,
+      0,
       1,
       1,
       1,
@@ -1961,7 +1970,7 @@
       1,
       0,
       1,
-      1,
+      0,
       1,
       1,
       1,
@@ -2188,7 +2197,7 @@
       1,
       1,
       0,
-      1,
+      0,
       1,
       1,
       0,
@@ -3525,7 +3534,7 @@
     "false_approval_rate": 0.0,
     "false_rejection_rate": 0.0011265490048817123,
     "expected_value": 2810.0,
-    "roc_auc": 0.9999659184844508,
+    "roc_auc": 0.9999473285668784,
     "predictions": [
       0,
       1,
@@ -6799,26 +6808,26 @@
     ]
   },
   "fair_validation_metrics": {
-    "accuracy": 0.9987763842153564,
-    "precision": 0.9996242014280345,
-    "recall": 0.9988734509951183,
-    "f1": 0.9992486851990984,
+    "accuracy": 0.9972468644845518,
+    "precision": 1.0,
+    "recall": 0.9966203529853549,
+    "f1": 0.998307316155727,
     "confusion_matrix": [
       [
-        605,
-        1
+        606,
+        0
       ],
       [
-        3,
-        2660
+        9,
+        2654
       ]
     ],
     "decision_threshold": 0.95,
-    "approval_rate": 0.8140104007341695,
-    "false_approval_rate": 0.0016501650165016502,
-    "false_rejection_rate": 0.0011265490048817123,
-    "expected_value": 2806.75,
-    "roc_auc": 0.9999659184844508,
+    "approval_rate": 0.8118690731110432,
+    "false_approval_rate": 0.0,
+    "false_rejection_rate": 0.003379647014645137,
+    "expected_value": 2801.0,
+    "roc_auc": 0.9999473285668784,
     "predictions": [
       0,
       1,
@@ -7352,7 +7361,7 @@
       1,
       0,
       1,
-      1,
+      0,
       1,
       1,
       1,
@@ -7854,7 +7863,6 @@
       0,
       0,
       0,
-      1,
       1,
       1,
       1,
@@ -7875,6 +7883,7 @@
       1,
       1,
       1,
+      0,
       1,
       1,
       0,
@@ -8146,7 +8155,6 @@
       1,
       1,
       0,
-      1,
       1,
       1,
       1,
@@ -8154,6 +8162,7 @@
       1,
       1,
       1,
+      0,
       1,
       1,
       0,
@@ -8281,10 +8290,10 @@
       1,
       1,
       0,
-      1,
       1,
       1,
       1,
+      0,
       1,
       1,
       1,
@@ -8547,7 +8556,7 @@
       1,
       1,
       1,
-      1,
+      0,
       1,
       0,
       1,
@@ -8732,7 +8741,7 @@
       1,
       1,
       1,
-      1,
+      0,
       0,
       1,
       1,
@@ -9334,7 +9343,7 @@
       1,
       1,
       1,
-      1,
+      0,
       1,
       0,
       1,
@@ -10092,10 +10101,11 @@
     ]
   },
   "fairness_mitigation": {
-    "strategy": "multi_metric",
-    "objective": "demographic_parity",
+    "mode": "multi_metric",
+    "strategy": "fairlearn_equalized_odds",
+    "objective": "composite_fairness",
     "primary_attribute": "applicant_age",
-    "enabled": false,
+    "enabled": true,
     "allowed_sensitive_values": [
       "25-34",
       "35-44",
@@ -10104,6 +10114,35 @@
       "65-74",
       "<25",
       ">74"
+    ],
+    "candidate_results": [
+      {
+        "strategy": "baseline",
+        "fairness_score": 2.8466111771700358,
+        "precision": 0.9996242014280345,
+        "expected_value": 2806.75,
+        "demographic_parity_difference": 0.8466111771700356,
+        "equalized_odds_difference": 1.0,
+        "disparate_impact": 0.0
+      },
+      {
+        "strategy": "fairlearn_demographic_parity",
+        "fairness_score": 1.157042811508905,
+        "precision": 0.984690067214339,
+        "expected_value": 2642.25,
+        "demographic_parity_difference": 0.27184263135959696,
+        "equalized_odds_difference": 0.589010989010989,
+        "disparate_impact": 0.703810808861681
+      },
+      {
+        "strategy": "fairlearn_equalized_odds",
+        "fairness_score": 0.5520882743457887,
+        "precision": 1.0,
+        "expected_value": 2801.0,
+        "demographic_parity_difference": 0.24737089908914722,
+        "equalized_odds_difference": 0.020456055785854292,
+        "disparate_impact": 0.7157386805292129
+      }
     ]
   },
   "fairness": {
@@ -10112,32 +10151,32 @@
         "metric": 0.5,
         "group_rates": {
           "1": 0.6923076923076923,
-          "2": 0.8225806451612904,
+          "2": 0.8172043010752689,
           "21": 1.0,
           "23": 1.0,
           "25": 1.0,
           "26": 0.5,
           "27": 1.0,
-          "3": 0.780952380952381,
+          "3": 0.7777777777777778,
           "4": 1.0,
-          "5": 0.8349007314524556,
-          "6": 0.7690387016229713
+          "5": 0.8333333333333334,
+          "6": 0.766541822721598
         }
       },
       "equalized_odds_difference": {
-        "metric": 0.00649350649350644,
+        "metric": 0.012987012987012991,
         "true_positive_rate_by_group": {
           "1": 1.0,
-          "2": 0.9935064935064936,
+          "2": 0.987012987012987,
           "21": 1.0,
           "23": 1.0,
           "25": 1.0,
           "26": 1.0,
           "27": 1.0,
-          "3": 1.0,
+          "3": 0.9959349593495935,
           "4": 1.0,
-          "5": 0.9975031210986267,
-          "6": 0.9983792544570502
+          "5": 0.9956304619225967,
+          "6": 0.9951377633711507
         },
         "false_positive_rate_by_group": {
           "1": 0.0,
@@ -10157,16 +10196,16 @@
         "metric": 0.5,
         "group_rates": [
           0.6923076923076923,
-          0.8225806451612904,
+          0.8172043010752689,
           1.0,
           1.0,
           1.0,
           0.5,
           1.0,
-          0.780952380952381,
+          0.7777777777777778,
           1.0,
-          0.8349007314524556,
-          0.7690387016229713
+          0.8333333333333334,
+          0.766541822721598
         ]
       }
     },
@@ -10174,25 +10213,25 @@
       "demographic_parity_difference": {
         "metric": 0.5,
         "group_rates": {
-          "1": 0.8129139072847682,
+          "1": 0.8112582781456954,
           "11": 1.0,
           "12": 0.5,
           "13": 1.0,
           "14": 0.8,
-          "2": 0.8309278350515464,
-          "3": 0.7623762376237624
+          "2": 0.8293814432989691,
+          "3": 0.7581329561527581
         }
       },
       "equalized_odds_difference": {
-        "metric": 0.0024752475247524774,
+        "metric": 0.007407407407407418,
         "true_positive_rate_by_group": {
-          "1": 0.9979674796747967,
+          "1": 0.9959349593495935,
           "11": 1.0,
           "12": 1.0,
           "13": 1.0,
           "14": 1.0,
-          "2": 0.9975247524752475,
-          "3": 0.9981481481481481
+          "2": 0.9956683168316832,
+          "3": 0.9925925925925926
         },
         "false_positive_rate_by_group": {
           "1": 0.0,
@@ -10207,32 +10246,32 @@
       "disparate_impact": {
         "metric": 0.5,
         "group_rates": [
-          0.8129139072847682,
+          0.8112582781456954,
           1.0,
           0.5,
           1.0,
           0.8,
-          0.8309278350515464,
-          0.7623762376237624
+          0.8293814432989691,
+          0.7581329561527581
         ]
       }
     },
     "applicant_sex": {
       "demographic_parity_difference": {
-        "metric": 0.044152068396284494,
+        "metric": 0.047219553058861274,
         "group_rates": {
-          "1": 0.8130792996910402,
+          "1": 0.809989701338826,
           "2": 0.8232931726907631,
-          "3": 0.7791411042944786,
+          "3": 0.7760736196319018,
           "6": 0.8
         }
       },
       "equalized_odds_difference": {
-        "metric": 0.0039215686274509665,
+        "metric": 0.007843137254901933,
         "true_positive_rate_by_group": {
-          "1": 0.9987349778621126,
+          "1": 0.9949399114484504,
           "2": 0.9963547995139733,
-          "3": 0.996078431372549,
+          "3": 0.9921568627450981,
           "6": 1.0
         },
         "false_positive_rate_by_group": {
@@ -10243,11 +10282,11 @@
         }
       },
       "disparate_impact": {
-        "metric": 0.9463713900942691,
+        "metric": 0.9426455184797246,
         "group_rates": [
-          0.8130792996910402,
+          0.809989701338826,
           0.8232931726907631,
-          0.7791411042944786,
+          0.7760736196319018,
           0.8
         ]
       }
@@ -10257,21 +10296,21 @@
         "metric": 0.2607879924953096,
         "group_rates": {
           "25-34": 0.7807933194154488,
-          "35-44": 0.8190709046454768,
+          "35-44": 0.8141809290953546,
           "45-54": 0.822754491017964,
-          "55-64": 0.8343558282208589,
+          "55-64": 0.8297546012269938,
           "65-74": 0.7873754152823921,
           "<25": 0.5853658536585366,
           ">74": 0.8461538461538461
         }
       },
       "equalized_odds_difference": {
-        "metric": 0.004457652303120341,
+        "metric": 0.010401188707280795,
         "true_positive_rate_by_group": {
           "25-34": 1.0,
-          "35-44": 0.9955423476968797,
+          "35-44": 0.9895988112927192,
           "45-54": 0.9970972423802612,
-          "55-64": 0.998165137614679,
+          "55-64": 0.9926605504587156,
           "65-74": 1.0,
           "<25": 1.0,
           ">74": 1.0
@@ -10290,9 +10329,9 @@
         "metric": 0.6917960088691796,
         "group_rates": [
           0.7807933194154488,
-          0.8190709046454768,
+          0.8141809290953546,
           0.822754491017964,
-          0.8343558282208589,
+          0.8297546012269938,
           0.7873754152823921,
           0.5853658536585366,
           0.8461538461538461
@@ -10304,45 +10343,45 @@
     "top_features": [
       {
         "feature": "numeric__interest_rate",
-        "importance": 0.7603350281715393
-      },
-      {
-        "feature": "numeric__high_cltv_flag",
-        "importance": 0.0810919851064682
-      },
-      {
-        "feature": "categorical__loan_type_2",
-        "importance": 0.040700290352106094
+        "importance": 0.8526799082756042
       },
       {
         "feature": "categorical__applicant_age_25-34",
-        "importance": 0.04000582545995712
-      },
-      {
-        "feature": "numeric__loan_to_property_value_ratio",
-        "importance": 0.01940499246120453
-      },
-      {
-        "feature": "numeric__high_dti_flag",
-        "importance": 0.015025428496301174
-      },
-      {
-        "feature": "categorical__occupancy_type_1",
-        "importance": 0.004182790406048298
+        "importance": 0.034959178417921066
       },
       {
         "feature": "categorical__occupancy_type_3",
-        "importance": 0.0035445736721158028
+        "importance": 0.017733247950673103
+      },
+      {
+        "feature": "numeric__combined_loan_to_value_ratio",
+        "importance": 0.013068431057035923
+      },
+      {
+        "feature": "numeric__loan_to_property_value_ratio",
+        "importance": 0.01185823604464531
       },
       {
         "feature": "categorical__loan_type_1",
-        "importance": 0.0033062046859413385
+        "importance": 0.011278899386525154
       },
       {
-        "feature": "numeric__loan_to_income_ratio",
-        "importance": 0.003031887114048004
+        "feature": "numeric__high_dti_flag",
+        "importance": 0.011034995317459106
+      },
+      {
+        "feature": "categorical__state_code_TX",
+        "importance": 0.007451911456882954
+      },
+      {
+        "feature": "categorical__applicant_age_35-44",
+        "importance": 0.0060691069811582565
+      },
+      {
+        "feature": "categorical__applicant_age_65-74",
+        "importance": 0.004551356192678213
       }
     ]
   },
-  "artifact_path": "/Users/josiahgordor/Desktop/DSPortfolio/Projects/loan_approval.worktrees/draw-an-architectural-diagram-for-this-project/models/loan_model.pkl"
+  "artifact_path": "/Users/josiahgordor/Desktop/DSPortfolio/Projects/loan_approval/models/loan_model.pkl"
 }
