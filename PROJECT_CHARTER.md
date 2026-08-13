@@ -135,6 +135,17 @@ Traditional mortgage underwriting is slow, manual, and inconsistent. It is also 
 9. Generate SHAP-based explanations.
 10. Publish results in API/dashboard/report artifacts.
 
+### Fairness Mitigation Techniques Applied
+
+The project applies several explicit fairness safeguards to reduce bias and improve decision quality while retaining model utility:
+
+- Resampling for class imbalance: the training pipeline uses SMOTE-style oversampling to reduce imbalance between approved and denied applications before fitting the classifier. This helps avoid the model learning skewed approval patterns driven by majority-class dominance.
+- Fairlearn post-processing: the pipeline evaluates Fairlearn `ThresholdOptimizer` with fairness constraints on the primary sensitive attribute (`applicant_age`). It tests demographic parity and equalized odds variants to assess whether approval thresholds can be adjusted to reduce disparate treatment without unacceptable utility loss.
+- Composite fairness selection: when multiple mitigation strategies are evaluated, the system compares baseline, demographic parity, and equalized odds variants using a composite fairness objective based on demographic parity difference, equalized odds difference, and disparate impact. The best strategy is selected based on fairness improvement while meeting a minimum precision floor.
+- Underwriting guardrails: manual review triggers are applied when high-risk underwriting signals appear, including DTI above 43%, CLTV above 80%, and LTV above 90%. These policy safeguards prevent the model from automatically approving risky applications even when the score is high.
+- Protected-attribute monitoring: fairness metrics are computed across key protected attributes (`applicant_race_1`, `applicant_ethnicity_1`, `applicant_sex`, and `applicant_age`) so that mitigation performance is visible by group as well as overall.
+- Safe fallback logic: sparse or unsupported sensitive values are excluded from Fairlearn fitting where necessary, and the pipeline falls back to the base model predictions for those unsupported values to prevent degenerate optimization failures.
+
 ### Stack
 
 - Python
@@ -144,6 +155,7 @@ Traditional mortgage underwriting is slow, manual, and inconsistent. It is also 
 - SHAP
 - FastAPI
 - Streamlit
+- Fairlearn
 
 ## 13. Current Status
 
