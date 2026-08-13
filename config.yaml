@@ -8,7 +8,7 @@ project:
     AI-powered mortgage underwriting assistant using HMDA data.
 
 paths:
-  data_raw: data/raw/5493001WHVQBGRSWEU75_header.txt
+  data_raw: data/raw
   data_delimiter: "|"
   data_processed: data/processed/
   models: models/

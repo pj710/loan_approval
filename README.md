@@ -7,7 +7,7 @@ An ML-based decision support system for mortgage underwriting using HMDA data.
 - `app/` - FastAPI and Streamlit entry points
 - `src/` - data, feature, model, fairness, and explainability modules
 - `notebooks/` - analysis notebooks for feature selection and modeling
-- `data/raw/` - HMDA source extract
+- `data/raw/` - HMDA source extracts; the loader accepts a directory so 2023/2024 company batches can be combined automatically
 - `reports/` - generated analysis artifacts
 - `config.yaml` - project paths, features, and validation rules
 
